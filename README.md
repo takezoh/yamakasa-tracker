@@ -17,6 +17,7 @@
 - [タグ配置設計](docs/tag-placement.md)
 - [プロトタイプ・ハードウェア方針](docs/prototype-hardware.md)
 - [ソフトウェア設計](docs/software-design.md)
+- [適応型分散送信設計](docs/adaptive-relay-coordination.md)
 
 ## Current hardware direction
 
@@ -34,9 +35,14 @@
 ## Current software direction
 
 - 主催者アプリ群がBLEタグを検出し、位置取得と送信を分散
-- 暫定開催判定：有効端末10台以上
-- 位置更新目標：20〜30秒
-- 個々の端末の位置取得目標：平均5〜15分に1回以下
+- 参加端末数の増減に応じて候補確率を適応調整
+- 1スロット当たりの期待候補数：概ね2台
+- 暫定開催判定：推定有効端末10台以上。判定遅延は許容
+- 位置更新目標：30秒
+- 非候補端末は位置取得・位置送信を行わない
+- 送信前のサーバー状態GETは行わない
+- 個々の端末の位置取得頻度は参加端末数に応じて低下
 - Google Roads APIで近傍道路へ補正
 - 道路補正済み位置の時系列から進行方向を推定
 - Google Roads API障害時は生位置で継続
+- API URIは `/v1/resources/{resourceId}/...` の一般化した形式を使用
