@@ -17,12 +17,14 @@
 - [ソフトウェア設計](docs/software-design.md)
 - [適応型分散送信設計](docs/adaptive-relay-coordination.md)
 - [タグ・中継端末間の位置補正設計](docs/location-correction.md)
+- [アプリ公開・配布設計](docs/app-distribution.md)
 
 ## Document authority
 
 - システム全体、識別子、API、測位品質、開催判定の正本：`docs/software-design.md`
 - 参加人数変動と候補端末選出の詳細：`docs/adaptive-relay-coordination.md`
 - タグと中継端末の位置関係、複数位置統合、固定オフセット補正：`docs/location-correction.md`
+- ストア公開、招待、権限、審査、配布運用：`docs/app-distribution.md`
 - 物理要件の正本：`docs/hardware-requirements.md`
 - 回路・電源・広告ペイロード・筐体：`docs/hardware-design.md`
 - 年次の物理配置と試験：`docs/tag-placement.md`
@@ -75,3 +77,12 @@ API:  "01af34c9812de704"
 - 道路補正済み位置の時系列から進行方向を推定
 - Google Roads API障害時は生位置で継続
 - API URI：`/v1/resources/{resourceId}/...`
+
+## Current distribution direction
+
+- アプリは無料配布
+- iOS：非表示App Storeを基本とする
+- Android：通常のGoogle Play Production公開を基本とする
+- 利用権限は期限付き招待URIまたはQRコードで有効化
+- 招待認可前にBluetooth・位置権限を要求しない
+- バックグラウンドBLE・位置取得をコア機能として審査申告する
