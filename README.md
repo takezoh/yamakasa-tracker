@@ -16,11 +16,13 @@
 - [プロトタイプ・ハードウェア方針](docs/prototype-hardware.md)
 - [ソフトウェア設計](docs/software-design.md)
 - [適応型分散送信設計](docs/adaptive-relay-coordination.md)
+- [タグ・中継端末間の位置補正設計](docs/location-correction.md)
 
 ## Document authority
 
 - システム全体、識別子、API、測位品質、開催判定の正本：`docs/software-design.md`
 - 参加人数変動と候補端末選出の詳細：`docs/adaptive-relay-coordination.md`
+- タグと中継端末の位置関係、複数位置統合、固定オフセット補正：`docs/location-correction.md`
 - 物理要件の正本：`docs/hardware-requirements.md`
 - 回路・電源・広告ペイロード・筐体：`docs/hardware-design.md`
 - 年次の物理配置と試験：`docs/tag-placement.md`
@@ -67,6 +69,8 @@ API:  "01af34c9812de704"
 - 位置更新目標：30秒
 - 非候補端末は位置取得・位置送信を行わない
 - 送信前のサーバー状態GETは行わない
+- BLEは距離測定ではなく、山笠近傍性と位置レポート品質の評価に使用
+- 複数端末のGNSS位置を検証・統合し、初期版ではタグ固定オフセットを主要経路に置かない
 - Google Roads APIで近傍道路へ補正
 - 道路補正済み位置の時系列から進行方向を推定
 - Google Roads API障害時は生位置で継続
