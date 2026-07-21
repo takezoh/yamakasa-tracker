@@ -16,6 +16,7 @@
 - [ハードウェア設計](docs/hardware-design.md)
 - [タグ配置設計](docs/tag-placement.md)
 - [プロトタイプ・ハードウェア方針](docs/prototype-hardware.md)
+- [ソフトウェア設計](docs/software-design.md)
 
 ## Current hardware direction
 
@@ -29,3 +30,13 @@
 - GPS、LTE、加速度センサー：タグには搭載しない
 - 初期プロトタイプ：一体型BLEモジュールまたは評価基板の内蔵アンテナ
 - 製品化：小型一体型を基本とし、実測で必要な方向だけ分離FPCアンテナ化
+
+## Current software direction
+
+- 主催者アプリ群がBLEタグを検出し、位置取得と送信を分散
+- 暫定開催判定：有効端末10台以上
+- 位置更新目標：20〜30秒
+- 個々の端末の位置取得目標：平均5〜15分に1回以下
+- Google Roads APIで近傍道路へ補正
+- 道路補正済み位置の時系列から進行方向を推定
+- Google Roads API障害時は生位置で継続
