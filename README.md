@@ -15,6 +15,7 @@
 - [ハードウェア要件](docs/hardware-requirements.md)
 - [ハードウェア設計](docs/hardware-design.md)
 - [タグ配置設計](docs/tag-placement.md)
+- [プロトタイプ・ハードウェア方針](docs/prototype-hardware.md)
 
 ## Current hardware direction
 
@@ -26,3 +27,5 @@
 - 防水：IP67相当
 - BLE広告：固定公開山笠ID＋方向別タグID＋認証コード
 - GPS、LTE、加速度センサー：タグには搭載しない
+- 初期プロトタイプ：一体型BLEモジュールまたは評価基板の内蔵アンテナ
+- 製品化：小型一体型を基本とし、実測で必要な方向だけ分離FPCアンテナ化
