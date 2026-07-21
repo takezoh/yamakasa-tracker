@@ -19,6 +19,17 @@
 - [ソフトウェア設計](docs/software-design.md)
 - [適応型分散送信設計](docs/adaptive-relay-coordination.md)
 
+## Document authority
+
+- ハードウェアの要求と受け入れ条件：`hardware-requirements.md`
+- 回路、筐体、アンテナ、ファームウェア：`hardware-design.md`
+- 山笠への年次配置と外観・無線試験：`tag-placement.md`
+- 初期検証から製品化までの段階：`prototype-hardware.md`
+- ソフトウェア全体、API、測位品質、開催判定：`software-design.md`
+- 参加人数変動に対する候補選出の詳細：`adaptive-relay-coordination.md`
+
+補助文書と全体設計が異なる場合は、上記の責務を持つ正本文書を優先する。
+
 ## Current hardware direction
 
 - 最優先制約：山笠の外観・意匠を損なわない
@@ -27,22 +38,32 @@
 - 電源：タグごとにCR2032
 - 動作期間：最低1週間
 - 防水：IP67相当
-- BLE広告：固定公開山笠ID＋方向別タグID＋認証コード
+- BLE広告：固定公開`yamakasa_id`＋方向別`node_id`＋認証コード
 - GPS、LTE、加速度センサー：タグには搭載しない
 - 初期プロトタイプ：一体型BLEモジュールまたは評価基板の内蔵アンテナ
 - 製品化：小型一体型を基本とし、実測で必要な方向だけ分離FPCアンテナ化
 
 ## Current software direction
 
+- APIと保存層では追跡対象を一般化して`resource_id` / `resourceId`と呼ぶ
+- BLE広告の`yamakasa_id`はサーバー側で`resource_id`へ対応付ける
 - 主催者アプリ群がBLEタグを検出し、位置取得と送信を分散
-- 参加端末数の増減に応じて候補確率を適応調整
-- 1スロット当たりの期待候補数：概ね2台
-- 暫定開催判定：推定有効端末10台以上。判定遅延は許容
-- 位置更新目標：30秒
-- 非候補端末は位置取得・位置送信を行わない
-- 送信前のサーバー状態GETは行わない
-- 個々の端末の位置取得頻度は参加端末数に応じて低下
+- 30秒スロット、目標候補数2台、候補確率3〜40%の適応型選出
+- 送信前の競合確認GETや厳密な単一リーダー選出は行わない
+- 最終既知位置は20秒以内・精度20m以内の場合だけ再利用
+- 新規測位は30m以内を通常採用、30〜50mは統合候補、50m超は原則不採用
+- presence更新5分、リース10分
+- 暫定開催判定：10台以上を約5分で`ACTIVE`、10台未満を10〜15分で`INACTIVE`
 - Google Roads APIで近傍道路へ補正
-- 道路補正済み位置の時系列から進行方向を推定
-- Google Roads API障害時は生位置で継続
-- API URIは `/v1/resources/{resourceId}/...` の一般化した形式を使用
+- 道路補正済み位置の30〜90秒時系列から進行方向を推定
+- Google Roads API障害時は生位置または平滑化位置で継続
+
+## Generalized API URI
+
+```text
+POST /v1/resources/{resourceId}/presence
+POST /v1/resources/{resourceId}/location-reports
+GET  /v1/resources/{resourceId}/public-state
+GET  /v1/resources/{resourceId}/stream
+GET  /v1/resources/{resourceId}/relay-config
+```
